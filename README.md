@@ -1,16 +1,58 @@
-# React + Vite
+# Website Name: ZapShift
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Live Site:** https://glistening-cheesecake-502203.netlify.app/
 
-Currently, two official plugins are available:
+**Admin Credentials:**  
+- **Email:** stevebhai@gmail.com  
+- **Password:** T@wsif
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## Overview
+This is a web-based management system designed to streamline rider management, parcel tracking, and payment processing. The website provides a clean, responsive interface for admins and users, along with real-time updates and analytics.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Admin Dashboard:** Access and manage all aspects of the website from a centralized dashboard.  
+- **Rider Management:** Add, Reject, or remove riders with ease. Includes name, contact number, email, and profile photo.  
+- **Parcel Tracking System:** Submit, track, and update parcels reported by users.  
+- **Payment Integration:** Complete parcel delivery payments using Stripe with real-time payment confirmation.  
+- **Search & Filter Functionality:** Quickly find rider or parcels using search and filter options.  
+- **User Authentication:** Secure login system for both admin and rider accounts.   
+- **Notifications & Alerts:** Receive notifications for new parcels, updates, or payment confirmations. 
+- **Responsive Design:** Works seamlessly across desktops, tablets, and mobile devices.  
+- **Analytics & Reports:** Track rider activity, parcel resolution status, and payment history in a structured manner.  
+- **Secure Backend:** Data is stored securely with proper authentication and authorization mechanisms.  
+- **Integration Ready:** Easily extendable with additional features, third-party APIs, or modules.
+---
+
+## Tech Stack
+
+- **Frontend**: React, Tailwind CSS, DaisyUI, Framer Motion
+- **Backend**: Node.js, Express
+- **Database**: MongoDB
+- **Authentication**: Firebase Authentication
+- **Payment** Gateway: Stripe
+
+## Installation & Setup
+
+1. Clone the repository
+
+FrontEnd:-
+ --> git clone https://github.com/TawsifHossain007/Zap-Shift
+BackEnd:-
+ --> git clone https://github.com/TawsifHossain007/Zap-Shift-Server
+
+2. Install dependencies for client and server
+
+--> npm install
+
+3. Configure environment variables for Firebase, MongoDB, and Stripe
+4. Run the development server
+
+--> npm run dev
+
+
+---

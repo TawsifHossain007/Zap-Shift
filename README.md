@@ -9,7 +9,11 @@
 ---
 
 ## Overview
-This is a web-based management system designed to streamline rider management, parcel tracking, and payment processing. The website provides a clean, responsive interface for admins and users, along with real-time updates and analytics.
+This is a role-based parcel delivery management system with separate dashboards for users, admins, and riders.
+
+Users can create parcel delivery requests and complete payments online. Admins manage all parcels from a central dashboard and assign deliveries to available riders based on region. Riders can view their assigned parcels and update delivery statuses such as Picked Up or Delivered in real time.
+
+The system ensures a smooth delivery workflow with clear role separation, real-time status updates, and an intuitive dashboard experience for all users.
 
 ---
 

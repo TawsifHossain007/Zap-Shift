@@ -6,48 +6,74 @@ import useAuth from "../../../Hooks/useAuth";
 const Navbar = () => {
   const { user, logOut } = useAuth();
 
-  const handleLogout = () => {
-    logOut()
-      .then()
-      .catch((err) => {
-        console.log(err);
-      });
+  const handleLogout = async () => {
+    try {
+      await logOut();
+    } catch (err) {
+      console.log(err);
+    }
   };
+  
+  const navClass = ({ isActive }) =>
+    `px-3 py-2 transition-all ${
+      isActive ? "bg-primary text-black rounded-full" : ""
+    }`;
 
   const links = (
     <>
       <li>
-        <NavLink to="">Services</NavLink>
-      </li>
-      <li>
-        <NavLink to="/sendParcel">Send A Parcel</NavLink>
-      </li>
-      <li>
-        <NavLink to="/rider">Be a Rider</NavLink>
-      </li>
-      <li>
-        <NavLink to="/coverage">Coverage</NavLink>
+        <NavLink to="/" className={navClass}>
+          Services
+        </NavLink>
       </li>
 
-      {user && <>
-        <li>
-          <NavLink to="/dashboard/my-parcels">My Parcels</NavLink>
-        </li>
-        <li>
-          <NavLink to="/dashboard">Dashboard</NavLink>
-        </li>
-      </>
-        
-      }
       <li>
-        <NavLink to="/aboutUs">About Us</NavLink>
+        <NavLink to="/sendParcel" className={navClass}>
+          Send A Parcel
+        </NavLink>
+      </li>
+
+      <li>
+        <NavLink to="/rider" className={navClass}>
+          Be a Rider
+        </NavLink>
+      </li>
+
+      <li>
+        <NavLink to="/coverage" className={navClass}>
+          Coverage
+        </NavLink>
+      </li>
+
+      {user && (
+        <>
+          <li>
+            <NavLink to="/dashboard/my-parcels" className={navClass}>
+              My Parcels
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink to="/dashboard" className={navClass}>
+              Dashboard
+            </NavLink>
+          </li>
+        </>
+      )}
+
+      <li>
+        <NavLink to="/aboutUs" className={navClass}>
+          About Us
+        </NavLink>
       </li>
     </>
   );
 
   return (
     <div className="navbar bg-base-100 shadow-sm">
+      {/* Left */}
       <div className="navbar-start">
+        {/* Mobile menu */}
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
             <svg
@@ -57,40 +83,46 @@ const Navbar = () => {
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              {" "}
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth="2"
                 d="M4 6h16M4 12h8m-8 6h16"
-              />{" "}
+              />
             </svg>
           </div>
+
           <ul
-            tabIndex="-1"
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+            tabIndex={-1}
+            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow"
           >
             {links}
           </ul>
         </div>
+
         <span className="btn btn-ghost text-xl">
-          <Logo></Logo>
+          <Logo />
         </span>
       </div>
+
+      {/* Center */}
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{links}</ul>
       </div>
-      <div className="navbar-end">
+
+      {/* Right */}
+      <div className="navbar-end gap-2">
         {user ? (
-          <a onClick={handleLogout} className="btn">
+          <button onClick={handleLogout} className="btn">
             Sign Out
-          </a>
+          </button>
         ) : (
-          <Link to={"/login"} className="btn">
+          <Link to="/login" className="btn">
             Login
           </Link>
         )}
-        <Link to={"/rider"} className="btn btn-primary text-black mx-4">
+
+        <Link to="/rider" className="btn btn-primary text-black">
           Be a Rider
         </Link>
       </div>

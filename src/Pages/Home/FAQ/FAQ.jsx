@@ -1,11 +1,11 @@
 import React from "react";
 import { FiArrowUpRight } from "react-icons/fi";
+import { Link } from "react-router";
 
 const FAQ = () => {
   return (
     <section className="py-20 px-6 bg-gray-50">
       <div className="max-w-4xl mx-auto text-center">
-
         {/* Title */}
         <h2 className="text-4xl font-bold text-gray-800">
           Frequently Asked Question (FAQ)
@@ -20,7 +20,6 @@ const FAQ = () => {
 
         {/* FAQ Items */}
         <div className="mt-12 space-y-4">
-
           {/* Item 1 (open by default) */}
           <div className="collapse collapse-arrow border border-teal-400 bg-white">
             <input type="radio" name="faq" defaultChecked />
@@ -28,10 +27,10 @@ const FAQ = () => {
               How does this posture corrector work?
             </div>
             <div className="collapse-content text-left  text-gray-600">
-              A posture corrector works by providing support and gentle alignment
-              to your shoulders, back, and spine, encouraging you to maintain
-              proper posture throughout the day. It helps align your shoulders
-              and improves body positioning.
+              A posture corrector works by providing support and gentle
+              alignment to your shoulders, back, and spine, encouraging you to
+              maintain proper posture throughout the day. It helps align your
+              shoulders and improves body positioning.
             </div>
           </div>
 
@@ -86,12 +85,14 @@ const FAQ = () => {
 
         {/* Button */}
         <div className="mt-12">
-          <button className="inline-flex items-center gap-3 bg-primary text-black px-8 py-3 rounded-full font-semibold hover:scale-105 transition">
-            See More FAQ’s
-            <span className="bg-black text-white p-2 rounded-full">
-              <FiArrowUpRight size={16} />
-            </span>
-          </button>
+          <Link to={"/aboutUs"}>
+            <button className="inline-flex items-center gap-3 bg-primary text-black px-8 py-3 rounded-full font-semibold hover:scale-105 transition">
+              See More FAQ’s
+              <span className="bg-black text-white p-2 rounded-full">
+                <FiArrowUpRight size={16} />
+              </span>
+            </button>
+          </Link>
         </div>
       </div>
     </section>

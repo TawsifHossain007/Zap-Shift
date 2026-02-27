@@ -24,6 +24,7 @@ import CompletedDeliveries from "../Pages/Dashboard/CompletedDeliveries/Complete
 import ParcelTrack from "../Pages/ParcelTrack/ParcelTrack";
 import DashboardHome from "../Pages/Dashboard/DashboardHome/DashboardHome";
 import AboutUs from "../Pages/AboutUs/AboutUs";
+import Blogs from "../Pages/Blogs/Blogs";
 
 export const router = createBrowserRouter([
   {
@@ -53,6 +54,10 @@ export const router = createBrowserRouter([
         {
             path: '/aboutUs',
             Component: AboutUs
+        },
+        {
+            path: '/blogs',
+            Component: Blogs
         },
         {
             path: "parcel-track/:trackingId",

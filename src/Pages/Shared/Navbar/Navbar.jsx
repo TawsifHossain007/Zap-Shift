@@ -2,9 +2,12 @@ import React from "react";
 import Logo from "../../../Components/Logo/Logo";
 import { Link, NavLink } from "react-router";
 import useAuth from "../../../Hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
+  console.log(user?.role);
 
   const handleLogout = async () => {
     try {
@@ -19,23 +22,24 @@ const Navbar = () => {
       isActive ? "bg-primary text-black rounded-full" : ""
     }`;
 
+  const axiosSecure = useAxiosSecure();
+
+  const { data: users = [] } = useQuery({
+    queryKey: ["users"],
+    enabled: !!user?.email,
+    queryFn: async () => {
+      const res = await axiosSecure.get("/users");
+      return res.data;
+    },
+  });
+
+  const dbUser = users?.find((u) => u.email === user?.email);
+
   const links = (
     <>
       <li>
         <NavLink to="/" className={navClass}>
           Services
-        </NavLink>
-      </li>
-
-      <li>
-        <NavLink to="/sendParcel" className={navClass}>
-          Send A Parcel
-        </NavLink>
-      </li>
-
-      <li>
-        <NavLink to="/rider" className={navClass}>
-          Be a Rider
         </NavLink>
       </li>
 
@@ -48,11 +52,10 @@ const Navbar = () => {
       {user && (
         <>
           <li>
-            <NavLink to="/dashboard/my-parcels" className={navClass}>
-              My Parcels
+            <NavLink to="/sendParcel" className={navClass}>
+              Send A Parcel
             </NavLink>
           </li>
-
           <li>
             <NavLink to="/dashboard" className={navClass}>
               Dashboard
@@ -64,6 +67,12 @@ const Navbar = () => {
       <li>
         <NavLink to="/aboutUs" className={navClass}>
           About Us
+        </NavLink>
+      </li>
+
+      <li>
+        <NavLink to="/blogs" className={navClass}>
+          Blogs
         </NavLink>
       </li>
     </>
@@ -170,7 +179,7 @@ const Navbar = () => {
             Login
           </Link>
         )}
-        {user?.role === "user" && (
+        {dbUser?.role === "user" && (
           <>
             <Link to="/rider" className="btn btn-primary text-black">
               Be a Rider

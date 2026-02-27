@@ -29,7 +29,7 @@ const Login = () => {
   };
 
   const handleAutoFillUser = () => {
-    setValue("email", "Steven@gmail.com");
+    setValue("email", "steven@gmail.com");
     setValue("password", "T@wsif");
   };
 

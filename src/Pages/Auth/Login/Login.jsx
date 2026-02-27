@@ -8,29 +8,47 @@ const Login = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm();
 
-  const location = useLocation()
-  const navigate = useNavigate()
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  const {signInUser} = useAuth()
+  const { signInUser } = useAuth();
 
   const handleLogin = (data) => {
-    signInUser(data.email,data.password)
-    .then(res=>{
-        console.log(res)
-        navigate(location?.state || '/')
-    })
-    .catch(err => {
-        console.log(err)
-    })
+    signInUser(data.email, data.password)
+      .then((res) => {
+        console.log(res);
+        navigate(location?.state || "/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleAutoFillUser = () => {
+    setValue("email", "Steven@gmail.com");
+    setValue("password", "T@wsif");
+  };
+
+  const handleAutoFillAdmin = () => {
+    setValue("email", "jake@gmail.com");
+    setValue("password", "T@wsif");
+  };
+
+  const handleAutoFillRider = () => {
+    setValue("email", "tom@gmail.com");
+    setValue("password", "T@wsif");
   };
 
   return (
     <div className="card bg-base-100 w-full mx-auto max-w-sm shrink-0 shadow-2xl p-5">
-        <h3 className="text-center font-semibold text-3xl text-secondary">Welcome back</h3>
-        <p className="text-center">Please Login</p>
+      <h3 className="text-center font-semibold text-3xl text-secondary">
+        Welcome back
+      </h3>
+      <p className="text-center">Please Login</p>
       <form onSubmit={handleSubmit(handleLogin)} className="card-body">
         <fieldset className="fieldset">
           {/* email */}
@@ -62,9 +80,34 @@ const Login = () => {
           </div>
           <button className="btn btn-neutral mt-4">Login</button>
         </fieldset>
-        <p className="font-medium">New to Zapshift? <Link className="text-secondary font-semibold" to={'/register'}>Register</Link></p>
+        <p className="font-medium">
+          New to Zapshift?{" "}
+          <Link className="text-secondary font-semibold" to={"/register"}>
+            Register
+          </Link>
+        </p>
       </form>
       <SocialLogin></SocialLogin>
+      <div className="space-y-2">
+        <button
+          onClick={handleAutoFillUser}
+          className="btn btn-primary text-black w-full hover:bg-black hover:text-primary"
+        >
+          AutoFill User Credentials
+        </button>
+        <button
+          onClick={handleAutoFillAdmin}
+          className="btn btn-primary text-black w-full hover:bg-black hover:text-primary"
+        >
+          AutoFill Admin Credentials
+        </button>
+        <button
+          onClick={handleAutoFillRider}
+          className="btn btn-primary text-black w-full hover:bg-black hover:text-primary"
+        >
+          AutoFill Rider Credentials
+        </button>
+      </div>
     </div>
   );
 };

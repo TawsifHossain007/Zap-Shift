@@ -7,6 +7,7 @@ import {
   FaChartLine,
 } from "react-icons/fa";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import { Link } from "react-router";
 
 const iconMap = {
   FaUserShield: <FaUserShield className="text-3xl text-primary" />,
@@ -88,9 +89,9 @@ const Blogs = () => {
               </p>
 
               <div className="card-actions justify-end mt-4">
-                <button className="btn btn-sm btn-primary text-black">
+                <Link to={`/blogs/${blog._id}`} className="btn btn-sm btn-primary text-black">
                   Read More
-                </button>
+                </Link>
               </div>
             </div>
           </div>

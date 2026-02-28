@@ -25,6 +25,7 @@ import ParcelTrack from "../Pages/ParcelTrack/ParcelTrack";
 import DashboardHome from "../Pages/Dashboard/DashboardHome/DashboardHome";
 import AboutUs from "../Pages/AboutUs/AboutUs";
 import Blogs from "../Pages/Blogs/Blogs";
+import BlogDetails from "../Pages/BlogDetails/BlogDetails";
 
 export const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ export const router = createBrowserRouter([
             path: "/coverage",
             Component: Coverage,
             loader: () => fetch('/ServiceCenter.json').then(res=>res.json())
+        },
+        {
+            path: "/blogs/:id",
+            Component: BlogDetails
         },
         {
             path: '/aboutUs',

@@ -2,12 +2,11 @@ import React from "react";
 import Logo from "../../../Components/Logo/Logo";
 import { Link, NavLink } from "react-router";
 import useAuth from "../../../Hooks/useAuth";
-import { useQuery } from "@tanstack/react-query";
-import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import useRole from "../../../Hooks/useRole";
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
-  console.log(user?.role);
+  const { role } = useRole();
 
   const handleLogout = async () => {
     try {
@@ -21,19 +20,6 @@ const Navbar = () => {
     `px-3 py-2 transition-all ${
       isActive ? "bg-primary text-black rounded-full" : ""
     }`;
-
-  const axiosSecure = useAxiosSecure();
-
-  const { data: users = [] } = useQuery({
-    queryKey: ["users"],
-    enabled: !!user?.email,
-    queryFn: async () => {
-      const res = await axiosSecure.get("/users");
-      return res.data;
-    },
-  });
-
-  const dbUser = users?.find((u) => u.email === user?.email);
 
   const links = (
     <>
@@ -179,7 +165,7 @@ const Navbar = () => {
             Login
           </Link>
         )}
-        {dbUser?.role === "user" && (
+        {role === "user" && (
           <>
             <Link to="/rider" className="btn btn-primary text-black">
               Be a Rider

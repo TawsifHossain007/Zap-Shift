@@ -2,10 +2,6 @@
 
 **Live Site:** https://glistening-cheesecake-502203.netlify.app/
 
-**Admin Credentials:**  
-- **Email:** stevebhai@gmail.com  
-- **Password:** T@wsif
-
 ---
 
 ## Overview

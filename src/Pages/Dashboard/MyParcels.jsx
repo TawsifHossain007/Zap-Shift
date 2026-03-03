@@ -80,9 +80,9 @@ const MyParcels = () => {
     }
 
   return (
-    <div>
-      <h1>All My Parcels {parcels.length}</h1>
-      <div className="overflow-x-auto">
+    <div className=" p-8">
+        <h1 className="text-5xl font-bold">My Parcels</h1>
+      <div className="overflow-x-auto mt-10">
         <table className="table table-zebra">
           {/* head */}
           <thead>

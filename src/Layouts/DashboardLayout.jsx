@@ -1,11 +1,16 @@
 import React from "react";
 import { CiDeliveryTruck } from "react-icons/ci";
-import { FaMotorcycle, FaRegCreditCard, FaTasks, FaUsers } from "react-icons/fa";
+import {
+  FaMotorcycle,
+  FaRegCreditCard,
+  FaTasks,
+  FaUsers,
+} from "react-icons/fa";
 import { Link, NavLink, Outlet } from "react-router";
 import useRole from "../Hooks/useRole";
 import { RiEBikeFill } from "react-icons/ri";
 import { SiGoogletasks } from "react-icons/si";
-import logoImg from '../assets/logo.png'
+import logoImg from "../assets/logo.png";
 
 const DashboardLayout = () => {
   const { role } = useRole();
@@ -53,12 +58,12 @@ const DashboardLayout = () => {
           {/* Sidebar content here */}
           <ul className="menu w-full grow">
             {/* List item */}
-            <Link to={'/'}>
-            <li>
-              <img src={logoImg} alt="" />
-            </li>
+            <Link to={"/"}>
+              <li>
+                <img src={logoImg} alt="" />
+              </li>
             </Link>
-            
+
             <li>
               <Link
                 to={"/dashboard"}
@@ -83,32 +88,40 @@ const DashboardLayout = () => {
               </Link>
             </li>
             {/* Our dashboard Links */}
-            <li>
-              <NavLink
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="My Parcel"
-                to={"/dashboard/my-parcels"}
-              >
-                <CiDeliveryTruck
-                  stroke="currentColor"
-                  className="my-1.5 inline-block size-4"
-                ></CiDeliveryTruck>
-                <span className="is-drawer-close:hidden">My Parcels</span>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="Payment History"
-                to={"/dashboard/payment-history"}
-              >
-                <FaRegCreditCard
-                  stroke="currentColor"
-                  className="my-1.5 inline-block size-4"
-                ></FaRegCreditCard>
-                <span className="is-drawer-close:hidden">Payment History</span>
-              </NavLink>
-            </li>
+            {role === "user" && (
+              <>
+                <li>
+                  <NavLink
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="My Parcel"
+                    to={"/dashboard/my-parcels"}
+                  >
+                    <CiDeliveryTruck
+                      stroke="currentColor"
+                      className="my-1.5 inline-block size-4"
+                    ></CiDeliveryTruck>
+                    <span className="is-drawer-close:hidden">My Parcels</span>
+                  </NavLink>
+                </li>
+
+                <li>
+                  <NavLink
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Payment History"
+                    to={"/dashboard/payment-history"}
+                  >
+                    <FaRegCreditCard
+                      stroke="currentColor"
+                      className="my-1.5 inline-block size-4"
+                    ></FaRegCreditCard>
+                    <span className="is-drawer-close:hidden">
+                      Payment History
+                    </span>
+                  </NavLink>
+                </li>
+              </>
+            )}
+
             {/* Rider links */}
             {role === "rider" && (
               <>
@@ -119,8 +132,8 @@ const DashboardLayout = () => {
                     to={"/dashboard/assigned-deliveries"}
                   >
                     <FaTasks>
-                      stroke="currentColor"
-                      className="my-1.5 inline-block size-4"
+                      stroke="currentColor" className="my-1.5 inline-block
+                      size-4"
                     </FaTasks>
                     <span className="is-drawer-close:hidden">
                       Assigned Deliveries
@@ -134,8 +147,8 @@ const DashboardLayout = () => {
                     to={"/dashboard/completed-deliveries"}
                   >
                     <SiGoogletasks>
-                      stroke="currentColor"
-                      className="my-1.5 inline-block size-4"
+                      stroke="currentColor" className="my-1.5 inline-block
+                      size-4"
                     </SiGoogletasks>
                     <span className="is-drawer-close:hidden">
                       Completed Deliveries
@@ -191,6 +204,22 @@ const DashboardLayout = () => {
                       ></FaUsers>
                       <span className="is-drawer-close:hidden">
                         Users Management
+                      </span>
+                    </NavLink>
+                  </li>
+
+                  <li>
+                    <NavLink
+                      className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                      data-tip="All Payments"
+                      to={"/dashboard/all-payments"}
+                    >
+                      <FaRegCreditCard
+                        stroke="currentColor"
+                        className="my-1.5 inline-block size-4"
+                      ></FaRegCreditCard>
+                      <span className="is-drawer-close:hidden">
+                        All Payments
                       </span>
                     </NavLink>
                   </li>

@@ -26,6 +26,7 @@ import DashboardHome from "../Pages/Dashboard/DashboardHome/DashboardHome";
 import AboutUs from "../Pages/AboutUs/AboutUs";
 import Blogs from "../Pages/Blogs/Blogs";
 import BlogDetails from "../Pages/BlogDetails/BlogDetails";
+import AllPayments from "../Pages/Dashboard/AllPayments/AllPayments";
 
 export const router = createBrowserRouter([
   {
@@ -123,6 +124,10 @@ export const router = createBrowserRouter([
         {
             path: 'assign-riders',
             element: <AdminRoutes><AssignRiders></AssignRiders></AdminRoutes>
+        },
+        {
+            path: 'all-payments',
+            element: <AdminRoutes><AllPayments></AllPayments></AdminRoutes>
         },
         //rider only
         {

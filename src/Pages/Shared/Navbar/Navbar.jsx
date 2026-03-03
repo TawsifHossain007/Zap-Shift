@@ -37,11 +37,13 @@ const Navbar = () => {
 
       {user && (
         <>
-          <li>
-            <NavLink to="/sendParcel" className={navClass}>
-              Send A Parcel
-            </NavLink>
-          </li>
+          {role === "user" && (
+            <li>
+              <NavLink to="/sendParcel" className={navClass}>
+                Send A Parcel
+              </NavLink>
+            </li>
+          )}
           <li>
             <NavLink to="/dashboard" className={navClass}>
               Dashboard
@@ -165,7 +167,7 @@ const Navbar = () => {
             Login
           </Link>
         )}
-        {role === "user" && (
+        {user && role === "user" && (
           <>
             <Link to="/rider" className="btn btn-primary text-black">
               Be a Rider

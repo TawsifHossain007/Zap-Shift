@@ -49,7 +49,10 @@ const AssignedDeliveries = () => {
           <thead>
             <tr>
               <th>SL No.</th>
-              <th>Name</th>
+              <th>Parcel Name</th>
+              <th>Sender Name</th>
+              <th>Recipient Name</th>
+              <th>Recipient District</th>
               <th>Confirmation</th>
               <th>Other Actions</th>
             </tr>
@@ -59,6 +62,9 @@ const AssignedDeliveries = () => {
               <tr key={parcel._id}>
                 <th>{index + 1}</th>
                 <td>{parcel.parcelName}</td>
+                <td>{parcel.senderName}</td>
+                <td>{parcel.receiverName}</td>
+                <td>{parcel.receiverDistrict}</td>
                 <td>
                   {parcel.deliveryStatus === "Rider_Assigned" ? (
                     <>

@@ -85,8 +85,8 @@ const ApproveRiders = () => {
 
   return (
     <div className="min-h-screen p-8">
-      <h1 className="text-5xl font bold">Pending Riders: {riders.length}</h1>
-      <div className="overflow-x-auto">
+      <h1 className="text-5xl font-bold">Approve Riders</h1>
+      <div className="overflow-x-auto mt-10">
         <table className="table table-zebra">
           {/* head */}
           <thead>

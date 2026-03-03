@@ -1,7 +1,7 @@
-import React from "react";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import useAuth from "../../../Hooks/useAuth";
+import LoadingSpinner from "../../../Components/LoadingSpinner/LoadingSpinner";
 import {
   PieChart,
   Pie,
@@ -28,7 +28,7 @@ const UserDashboardHome = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
-  const { data: parcels = [] } = useQuery({
+  const { data: parcels = [], isLoading: parcelsLoading } = useQuery({
     queryKey: ["parcels", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
@@ -37,7 +37,7 @@ const UserDashboardHome = () => {
     },
   });
 
-  const { data: payments = [] } = useQuery({
+  const { data: payments = [], isLoading: paymentsLoading } = useQuery({
     queryKey: ["payments", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
@@ -45,6 +45,8 @@ const UserDashboardHome = () => {
       return res.data;
     },
   });
+
+  const isLoading = parcelsLoading || paymentsLoading;
 
   // =========================
   // Delivery Status Counts
@@ -94,10 +96,13 @@ const UserDashboardHome = () => {
   }));
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
+    <div className="p-8 max-w-7xl mx-auto">
+      {isLoading && <LoadingSpinner message="Loading dashboard data..." />}
 
+      {!isLoading && (
+        <div>
       {/* Header */}
-      <h1 className="text-3xl font-bold mb-1">My Dashboard</h1>
+      <h1 className="text-3xl font-bold mb-2">My Dashboard</h1>
       <p className="text-gray-500 mb-8">
         Overview of your parcel deliveries
       </p>
@@ -228,6 +233,8 @@ const UserDashboardHome = () => {
         </div>
 
       </div>
+        </div>
+      )}
     </div>
   );
 };

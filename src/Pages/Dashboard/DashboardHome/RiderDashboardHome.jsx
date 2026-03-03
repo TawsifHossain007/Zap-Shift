@@ -1,7 +1,7 @@
-import React from "react";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import useAuth from "../../../Hooks/useAuth";
+import LoadingSpinner from "../../../Components/LoadingSpinner/LoadingSpinner";
 import {
   PieChart,
   Pie,
@@ -70,24 +70,19 @@ const RiderDashboardHome = () => {
   }));
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-8">
-      <h1 className="text-3xl font-bold mb-6">Rider Dashboard</h1>
+    <div className="p-8 max-w-7xl mx-auto">
+      <h1 className="text-3xl font-bold mb-8">Rider Dashboard</h1>
 
-      {/* Loading & Error States */}
-      {isLoading && (
-        <div className="text-center py-8">
-          <p className="text-lg">Loading dashboard data...</p>
-        </div>
-      )}
+      {isLoading && <LoadingSpinner message="Loading dashboard data..." />}
 
       {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
           <p>Error loading data: {error.message}</p>
         </div>
       )}
 
       {!isLoading && !error && (
-        <>
+        <div className="space-y-8">
           {/* Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white shadow rounded p-6 text-center">
@@ -163,7 +158,7 @@ const RiderDashboardHome = () => {
           </ResponsiveContainer>
         </div>
       </div>
-        </>
+        </div>
       )}
     </div>
   );

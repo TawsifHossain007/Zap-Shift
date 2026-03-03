@@ -1,7 +1,7 @@
-import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAuth from "../../../Hooks/useAuth";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import LoadingSpinner from "../../../Components/LoadingSpinner/LoadingSpinner";
 
 const PaymentHistory = () => {
   const { user } = useAuth();
@@ -16,31 +16,26 @@ const PaymentHistory = () => {
   });
 
   return (
-    <div className="p-8">
-      <h2 className="text-5xl font-bold">Payment History</h2>
+    <div className="p-8 max-w-7xl mx-auto">
+      <h2 className="text-3xl font-bold mb-8">Payment History</h2>
 
-      {isLoading && (
-        <div className="text-center py-8">
-          <p className="text-lg">Loading payment history...</p>
-        </div>
-      )}
+      {isLoading && <LoadingSpinner message="Loading payment history..." />}
 
       {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mt-4">
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
           <p>Error loading payments: {error.message}</p>
         </div>
       )}
 
       {!isLoading && !error && payments.length === 0 && (
-        <div className="text-center py-8">
+        <div className="text-center py-12 bg-gray-50 rounded-lg">
           <p className="text-lg text-gray-500">No payment history found.</p>
         </div>
       )}
 
       {!isLoading && !error && payments.length > 0 && (
-        <div className="overflow-x-auto mt-10">
+        <div className="overflow-x-auto bg-white rounded-lg shadow">
         <table className="table table-zebra">
-          {/* head */}
           <thead>
             <tr>
               <th>SL No.</th>

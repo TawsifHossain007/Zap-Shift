@@ -1,14 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { FaUserCheck } from "react-icons/fa";
 import { IoPersonRemove } from "react-icons/io5";
 import { FaTrashCan } from "react-icons/fa6";
 import Swal from "sweetalert2";
+import LoadingSpinner from "../../../Components/LoadingSpinner/LoadingSpinner";
 
 const ApproveRiders = () => {
   const axiosSecure = useAxiosSecure();
-  const { refetch, data: riders = [] } = useQuery({
+  const { refetch, data: riders = [], isLoading, error } = useQuery({
     queryKey: ["riders", "pending"],
     queryFn: async () => {
       const res = await axiosSecure.get("riders");
@@ -84,9 +84,25 @@ const ApproveRiders = () => {
 
 
   return (
-    <div className="min-h-screen p-8">
-      <h1 className="text-5xl font-bold">Approve Riders</h1>
-      <div className="overflow-x-auto mt-10">
+    <div className="p-8 max-w-7xl mx-auto">
+      <h1 className="text-3xl font-bold mb-8">Approve Riders</h1>
+
+      {isLoading && <LoadingSpinner message="Loading riders..." />}
+
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+          <p>Error loading riders: {error.message}</p>
+        </div>
+      )}
+
+      {!isLoading && !error && riders.length === 0 && (
+        <div className="text-center py-12 bg-gray-50 rounded-lg">
+          <p className="text-lg text-gray-500">No riders found.</p>
+        </div>
+      )}
+
+      {!isLoading && !error && riders.length > 0 && (
+      <div className="overflow-x-auto bg-white rounded-lg shadow">
         <table className="table table-zebra">
           {/* head */}
           <thead>
@@ -143,6 +159,7 @@ const ApproveRiders = () => {
           </tbody>
         </table>
       </div>
+      )}
     </div>
   );
 };

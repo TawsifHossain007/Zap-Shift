@@ -1,15 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
+import { useState } from "react";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { FaUserShield } from "react-icons/fa";
 import { FiShieldOff } from "react-icons/fi";
 import Swal from "sweetalert2";
+import LoadingSpinner from "../../../Components/LoadingSpinner/LoadingSpinner";
 
 const UsersManagement = () => {
   const axiosSecure = useAxiosSecure();
   const [searchText, setSearchText] = useState('')
 
-  const { refetch, data: users = [] } = useQuery({
+  const { refetch, data: users = [], isLoading, error } = useQuery({
     queryKey: ["users",searchText],
     queryFn: async () => {
       const res = await axiosSecure.get(`/users?searchText=${searchText}`);
@@ -50,9 +51,10 @@ const UsersManagement = () => {
   };
 
   return (
-    <div className="min-h-screen p-8">
-      <h1 className="text-5xl font-bold">Users Management</h1>
-      <label className="input mb-10 mt-10">
+    <div className="p-8 max-w-7xl mx-auto">
+      <h1 className="text-3xl font-bold mb-8">Users Management</h1>
+      
+      <label className="input mb-8">
         <svg
           className="h-[1em] opacity-50"
           xmlns="http://www.w3.org/2000/svg"
@@ -73,7 +75,23 @@ const UsersManagement = () => {
         <kbd className="kbd kbd-sm">⌘</kbd>
         <kbd className="kbd kbd-sm">K</kbd>
       </label>
-      <div className="overflow-x-auto">
+
+      {isLoading && <LoadingSpinner message="Loading users..." />}
+
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+          <p>Error loading users: {error.message}</p>
+        </div>
+      )}
+
+      {!isLoading && !error && users.length === 0 && (
+        <div className="text-center py-12 bg-gray-50 rounded-lg">
+          <p className="text-lg text-gray-500">No users found.</p>
+        </div>
+      )}
+
+      {!isLoading && !error && users.length > 0 && (
+      <div className="overflow-x-auto bg-white rounded-lg shadow">
         <table className="table">
           {/* head */}
           <thead>
@@ -137,6 +155,7 @@ const UsersManagement = () => {
           </tbody>
         </table>
       </div>
+      )}
     </div>
   );
 };

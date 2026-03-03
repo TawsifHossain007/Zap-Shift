@@ -1,14 +1,22 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
-import { Legend, Pie, PieChart, Tooltip, Cell } from "recharts";
+import LoadingSpinner from "../../../Components/LoadingSpinner/LoadingSpinner";
+import {
+  Legend,
+  Pie,
+  PieChart,
+  Tooltip,
+  Cell,
+  ResponsiveContainer,
+} from "recharts";
 
-const COLORS = ["#4ade80", "#60a5fa", "#facc15", "#f87171", "#a78bfa"]; // green, blue, yellow, red, purple
+const COLORS = ["#4ade80", "#60a5fa", "#facc15", "#f87171", "#a78bfa"];
 
 const AdminDashboardHome = () => {
   const axiosSecure = useAxiosSecure();
 
-  const { data: deliveryStats = [] } = useQuery({
+  // ================= QUERIES =================
+  const { data: deliveryStats = [], isLoading: statsLoading } = useQuery({
     queryKey: ["delivery-status-stats"],
     queryFn: async () => {
       const res = await axiosSecure.get("/parcels/delivery-status/stats");
@@ -16,82 +24,175 @@ const AdminDashboardHome = () => {
     },
   });
 
+  const { data: payments = [], isLoading: paymentsLoading } = useQuery({
+    queryKey: ["payments"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/payments");
+      return res.data;
+    },
+  });
+
+  const { data: users = [], isLoading: usersLoading } = useQuery({
+    queryKey: ["users"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/users");
+      return res.data;
+    },
+  });
+
+  const { data: riders = [], isLoading: ridersLoading } = useQuery({
+    queryKey: ["riders"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/riders");
+      return res.data;
+    },
+  });
+
+  const { data: parcels = [], isLoading: parcelsLoading } = useQuery({
+    queryKey: ["parcels"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/parcels");
+      return res.data;
+    },
+  });
+
+  const isLoading =
+    statsLoading ||
+    paymentsLoading ||
+    usersLoading ||
+    ridersLoading ||
+    parcelsLoading;
+
+  // ================= CALCULATIONS =================
+  const totalRevenue = payments
+    .filter((p) => p.paymentStatus === "paid")
+    .reduce((sum, p) => sum + Number(p.amount || 0), 0);
+
   const pieChartData = deliveryStats.map((item) => ({
-    name: item.status,
+    name: item._id,
     value: item.count,
   }));
 
+  // ================= UI =================
   return (
-    <div className="p-8 flex flex-col gap-12">
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {deliveryStats.map((stat) => (
-          <div
-            key={stat._id}
-            className="bg-white shadow-lg rounded-xl p-6 flex flex-col justify-between hover:scale-105 transition-transform duration-300"
-          >
-            <div className="flex items-center gap-4">
-              <div className="p-3 rounded-full bg-primary/20 text-primary">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  className="h-8 w-8 stroke-current"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
-                  />
-                </svg>
+    <div className="p-8 max-w-7xl mx-auto">
+      {isLoading && <LoadingSpinner message="Loading dashboard data..." />}
+
+      {!isLoading && (
+        <div className="space-y-12">
+          {/* HEADER */}
+          <div>
+            <h1 className="text-3xl font-bold mb-2">
+              Admin Dashboard
+            </h1>
+            <p className="text-gray-500">
+              Overview of delivery system performance
+            </p>
+          </div>
+
+          {/* KPI SUMMARY */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { label: "Total Users", value: users.length },
+              { label: "Total Riders", value: riders.length },
+              { label: "Total Parcels", value: parcels.length },
+              {
+                label: "Total Revenue",
+                value: `৳ ${totalRevenue.toLocaleString()}`,
+              },
+            ].map((item, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition"
+              >
+                <p className="text-sm text-gray-500">{item.label}</p>
+                <h2 className="text-3xl font-semibold mt-2 text-gray-800">
+                  {item.value}
+                </h2>
               </div>
-              <div>
-                <div className="text-gray-500 font-medium">{stat._id}</div>
-                <div className="text-2xl font-bold text-gray-800">{stat.count}</div>
-              </div>
+            ))}
+          </div>
+
+          {/* DELIVERY STATUS SECTION */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+            {/* STATUS CARDS */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {deliveryStats.map((stat, index) => {
+                const percentage = parcels.length
+                  ? (stat.count / parcels.length) * 100
+                  : 0;
+
+                return (
+                  <div
+                    key={stat._id}
+                    className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6"
+                  >
+                    <p className="text-sm text-gray-500">
+                      {stat._id}
+                    </p>
+
+                    <h3 className="text-2xl font-bold mt-2 text-gray-800">
+                      {stat.count}
+                    </h3>
+
+                    <div
+                      className="h-2 mt-4 rounded-full"
+                      style={{
+                        backgroundColor:
+                          COLORS[index % COLORS.length] + "33",
+                      }}
+                    >
+                      <div
+                        className="h-2 rounded-full"
+                        style={{
+                          width: `${percentage}%`,
+                          backgroundColor:
+                            COLORS[index % COLORS.length],
+                        }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-            <div className="mt-4 text-sm text-gray-400">
-              {/* Optional: trend info */}
-              ↘︎ 90 (14%)
+
+            {/* PIE CHART */}
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 flex flex-col items-center">
+              <h3 className="text-lg font-semibold text-gray-700 mb-6">
+                Delivery Status Distribution
+              </h3>
+
+              <div className="w-full h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={pieChartData}
+                      dataKey="value"
+                      nameKey="name"
+                      innerRadius={70}
+                      outerRadius={110}
+                      paddingAngle={4}
+                      label={({ percent }) =>
+                        `${(percent * 100).toFixed(0)}%`
+                      }
+                    >
+                      {pieChartData.map((entry, index) => (
+                        <Cell
+                          key={index}
+                          fill={COLORS[index % COLORS.length]}
+                        />
+                      ))}
+                    </Pie>
+
+                    <Tooltip />
+                    <Legend verticalAlign="bottom" />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
             </div>
           </div>
-        ))}
-      </div>
-
-      {/* Pie Chart */}
-      <div className="flex justify-center items-center">
-        <PieChart width={400} height={400}>
-          <Pie
-            data={pieChartData}
-            dataKey="value"
-            nameKey="name"
-            cx="50%"
-            cy="50%"
-            outerRadius={120}
-            innerRadius={60} // donut style
-            paddingAngle={5}
-            label={({ name, percent }) =>
-              `${name}: ${(percent * 100).toFixed(0)}%`
-            }
-            isAnimationActive={true}
-          >
-            {pieChartData.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-            ))}
-          </Pie>
-          <Tooltip
-            formatter={(value) => [value, "Parcels"]}
-            contentStyle={{ backgroundColor: "#1f2937", color: "#fff", borderRadius: "8px" }}
-          />
-          <Legend
-            verticalAlign="bottom"
-            height={36}
-            iconType="circle"
-            wrapperStyle={{ fontSize: "14px", fontWeight: 500 }}
-          />
-        </PieChart>
-      </div>
+        </div>
+      )}
     </div>
   );
 };

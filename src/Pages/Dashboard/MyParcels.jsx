@@ -1,22 +1,23 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
 import useAuth from "../../Hooks/useAuth";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { FiEdit } from "react-icons/fi";
 import { FaMagnifyingGlass, FaTrashCan } from "react-icons/fa6";
 import Swal from "sweetalert2";
 import { Link } from "react-router";
+import LoadingSpinner from "../../Components/LoadingSpinner/LoadingSpinner";
 
 const MyParcels = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
-  const { data: parcels = [],refetch } = useQuery({
+  const { data: parcels = [], isLoading, error, refetch } = useQuery({
     queryKey: ["myParcels", user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/parcels?email=${user?.email}`);
       return res.data;
     },
+    enabled: !!user?.email,
   });
 
   const handelDeleteParcel = (id) => {
@@ -80,9 +81,25 @@ const MyParcels = () => {
     }
 
   return (
-    <div className=" p-8">
-        <h1 className="text-5xl font-bold">My Parcels</h1>
-      <div className="overflow-x-auto mt-10">
+    <div className="p-8 max-w-7xl mx-auto">
+      <h1 className="text-3xl font-bold mb-8">My Parcels</h1>
+
+      {isLoading && <LoadingSpinner message="Loading your parcels..." />}
+
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+          <p>Error loading parcels: {error.message}</p>
+        </div>
+      )}
+
+      {!isLoading && !error && parcels.length === 0 && (
+        <div className="text-center py-12 bg-gray-50 rounded-lg">
+          <p className="text-lg text-gray-500">No parcels found.</p>
+        </div>
+      )}
+
+      {!isLoading && !error && parcels.length > 0 && (
+      <div className="overflow-x-auto bg-white rounded-lg shadow">
         <table className="table table-zebra">
           {/* head */}
           <thead>
@@ -133,6 +150,7 @@ const MyParcels = () => {
           </tbody>
         </table>
       </div>
+      )}
     </div>
   );
 };

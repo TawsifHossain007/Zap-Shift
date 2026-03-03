@@ -1,14 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import LoadingSpinner from "../../../Components/LoadingSpinner/LoadingSpinner";
 
 const AssignRiders = () => {
   const [selectedParcel, setSelectedParcel] = useState();
   const axiosSecure = useAxiosSecure();
 
 
-  const { data: parcels = [], refetch: parcelsRefetch } = useQuery({
+  const { data: parcels = [], isLoading, error, refetch: parcelsRefetch } = useQuery({
     queryKey: ["parcels", "pending-pickup"],
     queryFn: async () => {
       const res = await axiosSecure.get(
@@ -62,10 +63,25 @@ const AssignRiders = () => {
   }
 
   return (
-    <div className="min-h-screen p-8">
-      <h1 className="text-5xl font-bold">Assign Riders</h1>
+    <div className="p-8 max-w-7xl mx-auto">
+      <h1 className="text-3xl font-bold mb-8">Assign Riders</h1>
 
-      <div className="overflow-x-auto">
+      {isLoading && <LoadingSpinner message="Loading parcels..." />}
+
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+          <p>Error loading parcels: {error.message}</p>
+        </div>
+      )}
+
+      {!isLoading && !error && parcels.length === 0 && (
+        <div className="text-center py-12 bg-gray-50 rounded-lg">
+          <p className="text-lg text-gray-500">No parcels awaiting rider assignment.</p>
+        </div>
+      )}
+
+      {!isLoading && !error && parcels.length > 0 && (
+      <div className="overflow-x-auto bg-white rounded-lg shadow">
         <table className="table table-zebra mt-10">
           {/* head */}
           <thead>
@@ -99,6 +115,7 @@ const AssignRiders = () => {
           </tbody>
         </table>
       </div>
+      )}
 
       <dialog
         ref={riderModalref}
